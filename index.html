@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arc Nil Absalon</title>
+    <link rel="icon" type="image/png" href="assets/img/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="assets/img/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+            font-weight: 400;
+            transition: opacity 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #333;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 40px;
+        }
+
+        .content {
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .portrait {
+            width: 320px;
+            height: 320px;
+            margin: 0 auto 60px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-orb {
+            width: min(280px, 70vw);
+            height: min(280px, 70vw);
+            position: relative;
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        #orbCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-size: 44px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        p {
+            font-size: 20px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .portrait {
+                width: min(260px, 80vw);
+                height: min(260px, 80vw);
+            }
+
+            .ai-orb {
+                width: min(260px, 80vw);
+                height: min(260px, 80vw); /* keep circular on all screens */
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            p {
+                font-size: 18px;
+            }
+
+            nav {
+                padding: 20px 30px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .nav-links a {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Arc Nil</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+        </div>
+    </nav>
+
+    <div class="page">
+        <div class="content">
+            <div class="portrait">
+                <div class="ai-orb">
+                    <canvas id="orbCanvas"></canvas>
+                </div>
+            </div>
+            <h1>Arc Nil Absalon</h1>
+            <p>Designer. Developer. Dreamer.</p>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const canvas = document.getElementById('orbCanvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const baseSize = 280;
+            const dpr = window.devicePixelRatio || 1;
+
+            canvas.width = baseSize * dpr;
+            canvas.height = baseSize * dpr;
+
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const radius = (baseSize * 0.35) * dpr;
+            const particleCount = 650;
+            const fov = 260 * dpr;
+
+            const particles = [];
+
+            // Mouse/touch tracking
+            let mouseX = cx;
+            let mouseY = cy;
+            let isInteracting = false;
+            const interactionRadius = 300 * dpr; // Interaction zone radius
+
+            // Track mouse globally so particles respond even when cursor is outside canvas
+            document.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mouseX = ((e.clientX - rect.left) / rect.width) * canvas.width;
+                mouseY = ((e.clientY - rect.top) / rect.height) * canvas.height;
+                
+                // Only interact if cursor is within the interaction radius
+                const distFromCenter = Math.hypot(mouseX - cx, mouseY - cy);
+                isInteracting = distFromCenter < interactionRadius;
+            });
+
+            document.addEventListener('mouseleave', () => {
+                isInteracting = false;
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const touch = e.touches[0];
+                mouseX = ((touch.clientX - rect.left) / rect.width) * canvas.width;
+                mouseY = ((touch.clientY - rect.top) / rect.height) * canvas.height;
+                
+                const distFromCenter = Math.hypot(mouseX - cx, mouseY - cy);
+                isInteracting = distFromCenter < interactionRadius;
+            });
+
+            document.addEventListener('touchend', () => {
+                isInteracting = false;
+            });
+
+            for (let i = 0; i < particleCount; i++) {
+                const u = Math.random();
+                const v = Math.random();
+                const theta = 2 * Math.PI * u;
+                const phi = Math.acos(2 * v - 1);
+
+                const x = radius * Math.sin(phi) * Math.cos(theta);
+                const y = radius * Math.cos(phi);
+                const z = radius * Math.sin(phi) * Math.sin(theta);
+
+                particles.push({
+                    x,
+                    y,
+                    z,
+                    originalX: x,
+                    originalY: y,
+                    originalZ: z,
+                    followX: 0,
+                    followY: 0,
+                });
+            }
+
+            let angleY = 0;
+            let angleX = 0.35;
+
+            function render() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const cosY = Math.cos(angleY);
+                const sinY = Math.sin(angleY);
+                const cosX = Math.cos(angleX);
+                const sinX = Math.sin(angleX);
+
+                const projected = [];
+
+                for (const p of particles) {
+                    let x = p.x;
+                    let y = p.y;
+                    let z = p.z;
+
+                    let z1 = z * cosY - x * sinY;
+                    let x1 = z * sinY + x * cosY;
+
+                    let y1 = y * cosX - z1 * sinX;
+                    let z2 = y * sinX + z1 * cosX;
+
+                    const scale = fov / (fov + z2);
+                    let px = cx + x1 * scale;
+                    let py = cy + y1 * scale;
+
+                    // Particle attraction toward cursor for all points
+                    if (isInteracting) {
+                        const dx = mouseX - px;
+                        const dy = mouseY - py;
+                        const dist = Math.hypot(dx, dy);
+
+                        // Respond from any distance, with gentle dampening when very close
+                        const dampening = Math.min(1, dist / (30 * dpr));
+                        p.followX += dx * 0.03 * dampening;
+                        p.followY += dy * 0.03 * dampening;
+                        
+                        // Softer cap to keep particles from flying off while allowing more range
+                        const maxPull = 100 * dpr;
+                        const pullMag = Math.hypot(p.followX, p.followY);
+                        if (pullMag > maxPull) {
+                            const scale = maxPull / pullMag;
+                            p.followX *= scale;
+                            p.followY *= scale;
+                        }
+                    } else {
+                        p.followX *= 0.92;
+                        p.followY *= 0.92;
+                    }
+
+                    px += p.followX;
+                    py += p.followY;
+
+                    // Keep particles within circular boundary to prevent clipping
+                    const distFromCenter = Math.hypot(px - cx, py - cy);
+                    const maxDist = (canvas.width / 2) * 0.95; // 95% of radius to add buffer
+                    if (distFromCenter > maxDist) {
+                        const angle = Math.atan2(py - cy, px - cx);
+                        px = cx + Math.cos(angle) * maxDist;
+                        py = cy + Math.sin(angle) * maxDist;
+                    }
+
+                    projected.push({ px, py, scale, z: z2 });
+                }
+
+                projected.sort((a, b) => a.z - b.z);
+
+                for (const p of projected) {
+                    const size = 1.2 * dpr * p.scale;
+
+                    ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+                    ctx.beginPath();
+                    ctx.arc(p.px, p.py, size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                angleY += 0.005;
+                angleX += 0.0008;
+
+                requestAnimationFrame(render);
+            }
+
+            render();
+        })();
+
+        // Orb follows cursor/touch
+        (function() {
+            const orb = document.querySelector('.ai-orb');
+            if (!orb) return;
+
+            let targetX = 0;
+            let targetY = 0;
+            let currentX = 0;
+            let currentY = 0;
+
+            function updateTarget(clientX, clientY) {
+                const rect = orb.parentElement.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                targetX = (clientX - centerX) * 0.15;
+                targetY = (clientY - centerY) * 0.15;
+            }
+
+            document.addEventListener('mousemove', (e) => {
+                updateTarget(e.clientX, e.clientY);
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                if (e.touches.length > 0) {
+                    updateTarget(e.touches[0].clientX, e.touches[0].clientY);
+                }
+            });
+
+            function animatePosition() {
+                currentX += (targetX - currentX) * 0.1;
+                currentY += (targetY - currentY) * 0.1;
+                
+                orb.style.transform = `translate(${currentX}px, ${currentY}px)`;
+                requestAnimationFrame(animatePosition);
+            }
+
+            animatePosition();
+        })();
+    </script>
+</body>
+</html>

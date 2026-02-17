@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic AI Face Generator - Arc Nil Absalon</title>
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="../assets/img/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+            font-weight: 400;
+            transition: opacity 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #333;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            margin: 120px 60px 40px;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: #f5f5f5;
+            transform: translateX(-4px);
+        }
+
+        .project-hero {
+            padding: 0 60px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .project-hero h1 {
+            font-size: 56px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            color: #666;
+            font-size: 18px;
+        }
+
+        .project-description {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 40px;
+            max-width: 800px;
+        }
+
+        .demo-section {
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .demo-section h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .iframe-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 100%;
+            margin: 0 auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .project-details {
+            padding: 0 60px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .details-section {
+            margin-bottom: 60px;
+        }
+
+        .details-section h2 {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .details-section p, .details-section li {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .details-section ul {
+            list-style-position: inside;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .tech-tag {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .modal {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px 30px;
+            }
+
+            .back-button {
+                margin: 100px 30px 20px;
+            }
+
+            .project-hero {
+                padding: 0 30px 40px;
+            }
+
+            .project-hero h1 {
+                font-size: 36px;
+            }
+
+            .project-meta {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .demo-section {
+                padding: 20px;
+            }
+
+            .generator-container {
+                padding: 20px;
+            }
+
+            .iframe-container iframe {
+                height: 500px;
+            }
+
+            .project-details {
+                padding: 0 30px 60px;
+            }
+
+            .details-section h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Arc Nil</div>
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="../projects.html">Projects</a>
+        </div>
+    </nav>
+
+    <a href="../projects.html" class="back-button">← Back to Projects</a>
+
+    <div class="project-hero">
+        <h1>Basic AI Face Generator</h1>
+        <div class="project-meta">
+            <span>Generative Adversarial Network</span>
+            <span>Deep Learning</span>
+            <span>2024</span>
+        </div>
+        <p class="project-description">
+            Generate realistic human faces using a GAN (Generative Adversarial Network) trained on facial datasets. Each generation creates unique, AI-synthesized faces that don't exist in reality.
+        </p>
+    </div>
+
+    <div class="project-hero">
+        <div class="demo-section">
+            <h2>Live Demo</h2>
+            <div class="iframe-container">
+                <iframe src="https://arcsu1-basic-face-generator.hf.space" title="Basic AI Face Generator Demo"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-details">
+        <div class="details-section">
+            <h2>Overview</h2>
+            <p>
+                This face generator uses a Generative Adversarial Network (GAN) trained on facial image datasets. The model consists of a generator and discriminator that work together to create highly realistic synthetic faces.
+            </p>
+        </div>
+
+        <div class="details-section">
+            <h2>Key Features</h2>
+            <ul>
+                <li>Generate realistic human faces with a single click</li>
+                <li>GAN-based architecture for high-quality outputs</li>
+                <li>Each face is completely unique and AI-generated</li>
+                <li>Trained on diverse facial datasets</li>
+                <li>Real-time generation and display</li>
+            </ul>
+        </div>
+
+        <div class="details-section">
+            <h2>Technology Stack</h2>
+            <div class="tech-stack">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">TensorFlow</span>
+                <span class="tech-tag">Keras</span>
+                <span class="tech-tag">GAN</span>
+                <span class="tech-tag">FastAPI</span>
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">Hugging Face</span>
+            </div>
+        </div>
+
+        <div class="details-section">
+            <h2>How It Works</h2>
+            <p>
+                The generator network takes random noise (latent vectors) as input and transforms it into realistic face images. The model was trained using adversarial learning, where a discriminator network helps the generator improve by distinguishing between real and generated faces.
+            </p>
+        </div>
+
+        <div class="details-section">
+            <h2>Applications</h2>
+            <p>
+                Face generation technology has applications in game development, avatar creation, privacy-preserving datasets, art, and research. These synthetic faces can be used anywhere placeholder images are needed without privacy concerns.
+            </p>
+        </div>
+    </div>
+
+
+</body>
+</html>

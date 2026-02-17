@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Early AI Chat - Arc Nil Absalon</title>
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="../assets/img/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+            font-weight: 400;
+            transition: opacity 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #333;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            margin: 120px 60px 40px;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: #f5f5f5;
+            transform: translateX(-4px);
+        }
+
+        .project-hero {
+            padding: 0 60px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .project-hero h1 {
+            font-size: 56px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            color: #666;
+            font-size: 18px;
+        }
+
+        .project-description {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 40px;
+            max-width: 800px;
+        }
+
+        .demo-section {
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .demo-section h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .iframe-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 100%;
+            margin: 0 auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .project-details {
+            padding: 0 60px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .details-section {
+            margin-bottom: 60px;
+        }
+
+        .details-section h2 {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .details-section p, .details-section li {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .details-section ul {
+            list-style-position: inside;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .tech-tag {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px 30px;
+            }
+
+            .back-button {
+                margin: 100px 30px 20px;
+            }
+
+            .project-hero {
+                padding: 0 30px 40px;
+            }
+
+            .project-hero h1 {
+                font-size: 36px;
+            }
+
+            .project-meta {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .demo-section {
+                padding: 20px;
+            }
+
+            .iframe-container iframe {
+                height: 500px;
+            }
+
+            .project-details {
+                padding: 0 30px 60px;
+            }
+
+            .details-section h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Arc Nil</div>
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="../projects.html">Projects</a>
+        </div>
+    </nav>
+
+    <a href="../projects.html" class="back-button">← Back to Projects</a>
+
+    <div class="project-hero">
+        <h1>Early AI Chat</h1>
+        <div class="project-meta">
+            <span>Fine-tuned GPT-2</span>
+            <span>Natural Language Processing</span>
+            <span>2024</span>
+        </div>
+        <p class="project-description">
+            An intelligent conversational AI powered by a fine-tuned GPT-2 model. This chatbot understands context, maintains conversation history, and generates human-like responses for natural interactions.
+        </p>
+    </div>
+
+    <div class="project-hero">
+        <div class="demo-section">
+            <h2>Live Demo</h2>
+            <div class="iframe-container">
+                <iframe src="https://arcsu1-basic-chatbot.hf.space" title="Early AI Chat Demo"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-details">
+        <div class="details-section">
+            <h2>Overview</h2>
+            <p>
+                This AI chatbot leverages the power of GPT-2, fine-tuned on conversational data to provide engaging and contextually relevant responses. The model maintains conversation history to ensure coherent multi-turn dialogues.
+            </p>
+        </div>
+
+        <div class="details-section">
+            <h2>Key Features</h2>
+            <ul>
+                <li>Context-aware responses using conversation history</li>
+                <li>Natural language understanding and generation</li>
+                <li>Real-time response generation</li>
+                <li>Fine-tuned on conversational datasets</li>
+                <li>Clean and intuitive user interface</li>
+            </ul>
+        </div>
+
+        <div class="details-section">
+            <h2>Technology Stack</h2>
+            <div class="tech-stack">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">Transformers</span>
+                <span class="tech-tag">GPT-2</span>
+                <span class="tech-tag">PyTorch</span>
+                <span class="tech-tag">FastAPI</span>
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">Hugging Face</span>
+            </div>
+        </div>
+
+        <div class="details-section">
+            <h2>Implementation Details</h2>
+            <p>
+                The chatbot uses a fine-tuned GPT-2 model hosted on Hugging Face Spaces. The model processes user input along with conversation history to generate contextually appropriate responses. The frontend communicates with the model via a RESTful API endpoint.
+            </p>
+        </div>
+    </div>
+
+
+</body>
+</html>

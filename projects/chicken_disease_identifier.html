@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chicken Disease Identifier - Arc Nil Absalon</title>
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="../assets/img/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+            font-weight: 400;
+            transition: opacity 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #333;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            margin: 120px 60px 40px;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: #f5f5f5;
+            transform: translateX(-4px);
+        }
+
+        .project-hero {
+            padding: 0 60px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .project-hero h1 {
+            font-size: 56px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            color: #666;
+            font-size: 18px;
+        }
+
+        .project-description {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 40px;
+            max-width: 800px;
+        }
+
+        .demo-section {
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .demo-section h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .demo-placeholder {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .demo-placeholder h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        .demo-placeholder p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .demo-placeholder a {
+            display: inline-block;
+            margin-top: 20px;
+            margin-right: 12px;
+            padding: 12px 32px;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .demo-placeholder a:hover {
+            background: #555;
+        }
+
+        .project-details {
+            padding: 0 60px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .details-section {
+            margin-bottom: 60px;
+        }
+
+        .details-section h2 {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .details-section p, .details-section li {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .details-section ul {
+            list-style-position: inside;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .tech-tag {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px 30px;
+            }
+
+            .back-button {
+                margin: 100px 30px 20px;
+            }
+
+            .project-hero {
+                padding: 0 30px 40px;
+            }
+
+            .project-hero h1 {
+                font-size: 36px;
+            }
+
+            .project-meta {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .demo-section {
+                padding: 20px;
+            }
+
+            .demo-placeholder {
+                padding: 20px;
+            }
+
+            .demo-placeholder a {
+                display: block;
+                margin-right: 0;
+                margin-bottom: 12px;
+            }
+
+            .demo-placeholder a:last-child {
+                margin-bottom: 0;
+            }
+
+            .project-details {
+                padding: 0 30px 60px;
+            }
+
+            .details-section h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Arc Nil</div>
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="../projects.html">Projects</a>
+        </div>
+    </nav>
+
+    <a href="../projects.html" class="back-button">← Back to Projects</a>
+
+    <div class="project-hero">
+        <h1>Chicken Disease Identifier</h1>
+        <div class="project-meta">
+            <span>Computer Vision</span>
+            <span>Deep Learning</span>
+            <span>2024</span>
+        </div>
+        <p class="project-description">
+            An AI-powered diagnostic tool that identifies chicken diseases from images using advanced computer vision and deep learning techniques.
+        </p>
+    </div>
+
+    <div class="project-hero">
+        <div class="demo-section">
+            <h2>Project Overview</h2>
+            <div class="demo-placeholder">
+                <h3>Disease Detection System</h3>
+                <p>This project uses convolutional neural networks (CNNs) to analyze chicken images and identify various diseases. The model has been trained on a comprehensive dataset of healthy and diseased chickens to provide accurate diagnostic assistance for poultry farmers and veterinarians.</p>
+                <a href="https://tinyurl.com/HBCV-APK" target="_blank" rel="noopener noreferrer">Download APK</a>
+                <a href="https://colab.research.google.com/drive/1jCDLaQdW-C72YUc2bhMzNN2jSpStVfbs?usp=sharing" target="_blank" rel="noopener noreferrer">View Training Code</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-details">
+        <div class="details-section">
+            <h2>Overview</h2>
+            <p>
+                This chicken disease identifier leverages computer vision and deep learning to detect common poultry diseases from images. The system can identify various conditions including Newcastle disease, infectious bronchitis, and other common ailments affecting chickens.
+            </p>
+        </div>
+
+        <div class="details-section">
+            <h2>Key Features</h2>
+            <ul>
+                <li>Automated disease detection from chicken images</li>
+                <li>High accuracy classification using CNNs</li>
+                <li>Support for multiple disease categories</li>
+                <li>Real-time image analysis and diagnosis</li>
+                <li>User-friendly interface for farmers and veterinarians</li>
+            </ul>
+        </div>
+
+        <div class="details-section">
+            <h2>Technology Stack</h2>
+            <div class="tech-stack">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">TensorFlow</span>
+                <span class="tech-tag">Keras</span>
+                <span class="tech-tag">OpenCV</span>
+                <span class="tech-tag">CNN</span>
+                <span class="tech-tag">Computer Vision</span>
+                <span class="tech-tag">Image Classification</span>
+            </div>
+        </div>
+
+        <div class="details-section">
+            <h2>How It Works</h2>
+            <p>
+                The system uses a convolutional neural network trained on a dataset of chicken images labeled with various diseases. When a user uploads an image, the model processes it through multiple layers to extract features and classify the chicken's health status or identify specific diseases.
+            </p>
+        </div>
+
+        <div class="details-section">
+            <h2>Applications</h2>
+            <p>
+                This tool is designed for poultry farmers, veterinarians, and agricultural professionals who need quick and reliable disease detection. Early identification of chicken diseases can help prevent outbreaks and reduce losses in poultry farming operations.
+            </p>
+        </div>
+    </div>
+
+
+</body>
+</html>
